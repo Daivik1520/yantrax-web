@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yantrax | Autonomous Museum Guide &amp; Cultural Preservation Robot</title>
+  <meta name="description" content="Yantrax is an autonomous, AI-powered museum guide, archaeological site mapping, and cultural preservation robot built for the World Robot Olympiad Future Innovators — running fully offline on the NVIDIA Jetson Orin Nano." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='44' fill='%23000'/><circle cx='38' cy='40' r='9' fill='%23fff'/><circle cx='62' cy='40' r='9' fill='%23fff'/><circle cx='50' cy='64' r='7' fill='%23fff'/></svg>" />
+</head>
+<body>
+
+<div class="page-frame">
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <a class="logo" href="#top" aria-label="Yantrax home">
+      <svg class="logo-mark" viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="#000"/>
+        <circle cx="11.5" cy="13" r="2.6" fill="#fff"/>
+        <circle cx="20.5" cy="13" r="2.6" fill="#fff"/>
+        <circle cx="16" cy="20.5" r="2.2" fill="#fff"/>
+        <rect x="14.8" y="0" width="2.4" height="5" fill="#000"/>
+        <rect x="14.8" y="27" width="2.4" height="5" fill="#000"/>
+        <rect x="0" y="14.8" width="5" height="2.4" fill="#000"/>
+        <rect x="27" y="14.8" width="5" height="2.4" fill="#000"/>
+      </svg>
+      <span>Yantrax</span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="#project">The Robot</a>
+      <a href="#mission">Vision &amp; Mission</a>
+      <a href="#technology">Technology</a>
+      <a href="#milestones">Milestones</a>
+      <a href="#team">Team</a>
+    </nav>
+    <a class="header-cta" href="#contact">Contact&nbsp;us</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <h1>
+      We give India&rsquo;s heritage<br />
+      an <span class="pixel-word"><i class="crop tl"></i><i class="crop br"></i>autonomous</span> guide.
+    </h1>
+    <p class="hero-sub">
+      Yantrax is an AI-powered robot that guides museum visitors, maps archaeological sites,
+      and digitizes historical manuscripts &mdash; speaking multiple Indian languages,
+      completely offline, entirely on its own.
+    </p>
+    <span class="btn-frame">
+      <a class="btn" href="#project">Meet Yantrax</a>
+    </span>
+    <canvas id="dome" aria-hidden="true"></canvas>
+  </section>
+
+  <!-- ===== Competition marquee ===== -->
+  <section class="press" id="press">
+    <p class="pixel-label center">Built for the World Robot Olympiad</p>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>World&nbsp;Robot&nbsp;Olympiad</span><span>Future&nbsp;Innovators</span>
+        <span>Senior&nbsp;Category</span><span>Team&nbsp;Yantrax</span>
+        <span>Jetson&nbsp;Orin&nbsp;Nano</span><span>100%&nbsp;Offline&nbsp;AI</span>
+        <span>World&nbsp;Robot&nbsp;Olympiad</span><span>Future&nbsp;Innovators</span>
+        <span>Senior&nbsp;Category</span><span>Team&nbsp;Yantrax</span>
+        <span>Jetson&nbsp;Orin&nbsp;Nano</span><span>100%&nbsp;Offline&nbsp;AI</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== The Robot ===== -->
+  <section class="section" id="project">
+    <div class="project-card">
+      <div class="project-copy reveal">
+        <p class="pixel-label">The Robot</p>
+        <h2>One Robot, Every Role<br />a Museum Needs</h2>
+        <p class="lead">
+          India holds thousands of years of history &mdash; and far too few hands to guide,
+          map and preserve it all. Yantrax is our answer.
+        </p>
+        <p class="inset">
+          Inside a museum, Yantrax drives itself between exhibits, greets visitors it
+          detects along the way, and explains each artifact through speech and an
+          interactive touchscreen &mdash; in the visitor&rsquo;s own Indian language. At
+          archaeological sites, the same robot switches roles: it maps the terrain,
+          records what it sees, and turns fragile handwritten manuscripts into searchable
+          digital text with its onboard OCR.
+        </p>
+        <p class="lead">
+          No internet. No operator. One intelligent platform, preserving culture while it
+          guides the people who came to experience it.
+        </p>
+        <span class="btn-frame">
+          <a class="btn" href="#technology">See the tech</a>
+        </span>
+      </div>
+      <div class="project-visual reveal">
+        <figure class="robot-photo">
+          <img src="images/yantrax-robot.jpg" alt="The Yantrax robot — a cream-colored autonomous museum guide decorated with traditional Indian folk art, with a stereo camera head, marigold garland, and a touchscreen greeting visitors with Namaste" />
+          <figcaption class="pixel-label photo-tag">Yantrax // Prototype 01</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Pipeline ===== -->
+  <section class="section" id="pipeline">
+    <div class="section-head reveal">
+      <p class="pixel-label">System Architecture</p>
+      <h2>Perceive. Understand. Act.</h2>
+      <p class="section-sub">
+        Every ability runs on one Jetson Orin Nano 8GB under ROS 2 Humble &mdash;
+        no cloud service anywhere in the loop.
+      </p>
+    </div>
+    <div class="pipe-display reveal" aria-hidden="true">
+      <span>23&Prime; portrait display &middot; Yantrax OS &middot; &ldquo;Namaste &mdash; say Yantrax to interact&rdquo;</span>
+    </div>
+    <div class="pipe-grid">
+      <div class="pipe-col reveal">
+        <p class="pixel-label pipe-tag">Perceive</p>
+        <ul>
+          <li><strong>YOLO26n &middot; TensorRT</strong><span>spots people at 53 FPS, INT8</span></li>
+          <li><strong>ByteTrack</strong><span>locks onto <em>your</em> track ID, not the nearest person</span></li>
+          <li><strong>RPLidar A1</strong><span>360&deg; laser scan for mapping &amp; planning</span></li>
+          <li><strong>HC-SR04</strong><span>forward cutoff, enforced in firmware</span></li>
+          <li><strong>2&times; USB cameras</strong><span>person detection + document chamber</span></li>
+        </ul>
+      </div>
+      <div class="pipe-col reveal">
+        <p class="pixel-label pipe-tag">Understand</p>
+        <ul>
+          <li><strong>Wake word</strong><span>&ldquo;Yantrax&rdquo; &mdash; or a double clap</span></li>
+          <li><strong>whisper.cpp</strong><span>speech to text, on-device</span></li>
+          <li><strong>Qwen2.5-3B</strong><span>offline LLM, answers in 9 languages</span></li>
+          <li><strong>Piper</strong><span>natural text-to-speech</span></li>
+          <li><strong>Tesseract</strong><span>manuscript &amp; document OCR</span></li>
+        </ul>
+      </div>
+      <div class="pipe-col reveal">
+        <p class="pixel-label pipe-tag">Act</p>
+        <ul>
+          <li><strong>Follow-the-gap</strong><span>replans a heading through the best gap in the scan</span></li>
+          <li><strong>SLAM + live map</strong><span>occupancy grid streams to the dashboard</span></li>
+          <li><strong>Arduino Mega</strong><span>differential drive base</span></li>
+          <li><strong>E-stop + watchdog</strong><span>latching stop, 400 ms firmware watchdog</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Mission ===== -->
+  <section class="section" id="mission">
+    <div class="mission-head reveal">
+      <p class="pixel-label">Mission &amp; Vision</p>
+      <h2>Preserving Heritage Through<br />Intelligent Robotics</h2>
+      <span class="btn-frame">
+        <a class="btn" href="#contact">Get in touch</a>
+      </span>
+    </div>
+    <canvas id="evolution" class="reveal" aria-hidden="true"></canvas>
+    <div class="two-col reveal">
+      <p>
+        Every year, manuscripts fade, inscriptions weather away, and stories go untold
+        because there aren&rsquo;t enough guides, archivists and surveyors to go around.
+        Our mission is to put intelligent robotics to work where human hands are
+        scarce &mdash; guiding visitors, mapping sites and digitizing documents before
+        time takes them.
+      </p>
+      <p>
+        We imagine museums where every visitor is welcomed in their own language, and
+        archaeological sites that are mapped and archived as carefully as they were
+        built. Yantrax is our first step toward that vision: technology that doesn&rsquo;t
+        replace the human connection to heritage, but multiplies it.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Core values marquee ===== -->
+  <section class="values-strip">
+    <p class="pixel-label center">What Yantrax Does</p>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track values-track">
+        <span>Guide</span><i>&#9679;</i><span>Map</span><i>&#9679;</i>
+        <span>Detect</span><i>&#9679;</i><span>Digitize</span><i>&#9679;</i>
+        <span>Preserve</span><i>&#9679;</i>
+        <span>Guide</span><i>&#9679;</i><span>Map</span><i>&#9679;</i>
+        <span>Detect</span><i>&#9679;</i><span>Digitize</span><i>&#9679;</i>
+        <span>Preserve</span><i>&#9679;</i>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Technology ===== -->
+  <section class="section" id="technology">
+    <div class="tech-grid">
+      <div class="tech-visual reveal" aria-hidden="true">
+        <svg viewBox="0 0 380 420" class="module-art">
+          <defs>
+            <linearGradient id="alu" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f0f0f0"/><stop offset="1" stop-color="#c4c4c4"/>
+            </linearGradient>
+          </defs>
+          <rect x="70" y="60" width="240" height="300" rx="18" fill="url(#alu)" stroke="#9a9a9a" stroke-width="2"/>
+          <rect x="92" y="84" width="196" height="118" rx="10" fill="#3a3a3a"/>
+          <circle cx="130" cy="128" r="16" fill="#111"/><circle cx="130" cy="128" r="7" fill="#5aa2ff"/>
+          <circle cx="176" cy="128" r="16" fill="#111"/><circle cx="176" cy="128" r="7" fill="#2c2c2c"/>
+          <rect x="212" y="112" width="58" height="32" rx="6" fill="#181818"/>
+          <rect x="220" y="170" width="50" height="12" rx="6" fill="#c73f2e"/>
+          <rect x="92" y="222" width="196" height="70" rx="10" fill="#e2e2e2" stroke="#adadad" stroke-width="1.5"/>
+          <line x1="106" y1="240" x2="274" y2="240" stroke="#b5b5b5" stroke-width="3"/>
+          <line x1="106" y1="256" x2="274" y2="256" stroke="#b5b5b5" stroke-width="3"/>
+          <line x1="106" y1="272" x2="230" y2="272" stroke="#b5b5b5" stroke-width="3"/>
+          <text x="128" y="338" font-family="monospace" font-size="17" font-weight="bold" fill="#1c1c1c">JETSON ORIN</text>
+          <rect x="150" y="352" width="80" height="8" rx="4" fill="#8f8f8f"/>
+        </svg>
+      </div>
+      <div class="tech-copy reveal">
+        <p class="pixel-label">Offline Intelligence</p>
+        <h2>Every Ability, Onboard.<br />No Internet Required.</h2>
+        <hr class="rule" />
+        <p>
+          Everything Yantrax knows runs on a single NVIDIA Jetson Orin Nano. Autonomous
+          navigation steers it through crowded halls; computer vision spots visitors and
+          artifacts; speech recognition understands questions in multiple Indian
+          languages and answers in kind. Because none of it needs the cloud, Yantrax
+          works just as well in a basement archive as in a modern gallery.
+        </p>
+        <p>
+          The same platform carries an OCR pipeline that photographs historical
+          manuscripts and converts them into digital, searchable text &mdash; and a
+          mapping stack that surveys archaeological sites as it moves. Touch, voice,
+          vision and motion, fused into one machine that any museum can simply switch on.
+        </p>
+        <span class="btn-frame">
+          <a class="btn" href="#contact">Get in touch</a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Benchmarks ===== -->
+  <section class="section" id="benchmarks">
+    <div class="section-head reveal">
+      <p class="pixel-label">Measured, Not Estimated</p>
+      <h2>Numbers From the Bench,<br />Not the Brochure</h2>
+    </div>
+    <div class="stat-grid">
+      <div class="stat reveal">
+        <strong><span class="count" data-count="53">0</span> FPS</strong>
+        <span>person detection, steady state</span>
+      </div>
+      <div class="stat reveal">
+        <strong><span class="count" data-count="98" data-decimals="0">0</span>%</strong>
+        <span>OCR character accuracy</span>
+      </div>
+      <div class="stat reveal">
+        <strong><span class="count" data-count="1.89" data-decimals="2">0</span> s</strong>
+        <span>mean document scan time</span>
+      </div>
+      <div class="stat reveal">
+        <strong><span class="count" data-count="9">0</span></strong>
+        <span>languages, fully offline</span>
+      </div>
+      <div class="stat reveal">
+        <strong><span class="count" data-count="400">0</span> ms</strong>
+        <span>firmware watchdog</span>
+      </div>
+      <div class="stat reveal">
+        <strong><span class="count" data-count="0">0</span></strong>
+        <span>build warnings, cloud calls, excuses</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Voice commands ===== -->
+  <section class="section" id="voice">
+    <div class="section-head reveal">
+      <p class="pixel-label">Say This</p>
+      <h2>Talk to It Like<br />a Person</h2>
+      <p class="section-sub">
+        Yantrax never speaks first &mdash; person detection only decides when it is
+        allowed to listen. Wake it with its name or a double clap, then just talk.
+      </p>
+    </div>
+    <div class="say-lines">
+      <p class="say-line">&ldquo;Yantrax&rdquo;<span>wakes it &mdash; so does a double clap</span></p>
+      <p class="say-line">&ldquo;Follow me&rdquo;<span>locks onto you, routes around obstacles</span></p>
+      <p class="say-line">&ldquo;Map this area&rdquo;<span>builds and saves the SLAM map</span></p>
+      <p class="say-line">&ldquo;Read this document&rdquo;<span>scans it, then reads it aloud</span></p>
+      <p class="say-line">&ldquo;Status report&rdquo;<span>spoken health check of every subsystem</span></p>
+      <p class="say-line">&ldquo;Stop&rdquo;<span>latching e-stop &mdash; it stays stopped until released</span></p>
+      <p class="say-line">Anything else<span>answered by the offline LLM, in your language</span></p>
+    </div>
+  </section>
+
+  <!-- ===== Hardware ===== -->
+  <section class="section" id="hardware">
+    <div class="section-head reveal">
+      <p class="pixel-label">Hardware</p>
+      <h2>The Full Bill of Brains</h2>
+    </div>
+    <div class="hw-table reveal">
+      <div class="hw-row hw-head"><span>Part</span><span>What it does</span></div>
+      <div class="hw-row"><span>Jetson Orin Nano 8GB</span><span>runs every model onboard &mdash; roughly 4.5 GB usable in practice</span></div>
+      <div class="hw-row"><span>Arduino Mega 2560</span><span>drive base, latching e-stop, 400 ms watchdog</span></div>
+      <div class="hw-row"><span>2&times; BTS7960 + 12V gearmotors</span><span>differential drive</span></div>
+      <div class="hw-row"><span>RPLidar A1</span><span>laser scanning for SLAM and planning</span></div>
+      <div class="hw-row"><span>USB camera</span><span>person detection</span></div>
+      <div class="hw-row"><span>USB camera + LED chamber</span><span>document scanning rig</span></div>
+      <div class="hw-row"><span>HC-SR04 ultrasonic</span><span>forward obstacle cutoff, enforced in firmware</span></div>
+      <div class="hw-row"><span>23&Prime; portrait display</span><span>the dashboard is the whole UI</span></div>
+    </div>
+    <div class="hw-actions reveal">
+      <span class="btn-frame">
+        <a class="btn" href="https://github.com/Daivik1520/Yantrax" target="_blank" rel="noopener">View the code on GitHub</a>
+      </span>
+      <p class="hw-note">Every ROS 2 package builds with zero warnings. The preflight script verifies every subsystem, in order.</p>
+    </div>
+  </section>
+
+  <!-- ===== Milestones ===== -->
+  <section class="section" id="milestones">
+    <div class="milestones-head reveal">
+      <p class="pixel-label">Milestones</p>
+      <h2>From Idea to the<br />Olympiad Stage</h2>
+    </div>
+    <div class="milestones-grid">
+      <div class="timeline-log">
+        <div class="timeline-rail" aria-hidden="true"><span id="rail-fill"></span></div>
+
+        <article class="log-entry" data-log>
+          <span class="ghost-num" aria-hidden="true">01</span>
+          <p class="pixel-label log-tag">Phase 01 // The Spark</p>
+          <h3>One guide, eighty visitors</h3>
+          <p>
+            It started with a school museum visit and a simple observation: one guide,
+            eighty visitors, four languages in the room. We formed Team Yantrax around a
+            question &mdash; what if the museum itself could speak to everyone?
+          </p>
+          <ul class="log-chips" aria-label="Phase outcomes">
+            <li>Team formed</li><li>Problem defined</li>
+          </ul>
+        </article>
+
+        <article class="log-entry" data-log>
+          <span class="ghost-num" aria-hidden="true">02</span>
+          <p class="pixel-label log-tag">Phase 02 // The Build</p>
+          <h3>A museum brain on one board</h3>
+          <p>
+            Months of building followed: an autonomous drive base, a touchscreen
+            interface, multilingual speech, person detection, site mapping and a
+            manuscript OCR pipeline &mdash; all squeezed onto one Jetson Orin Nano and
+            proven working completely offline.
+          </p>
+          <ul class="log-chips" aria-label="Phase outcomes">
+            <li>Jetson online</li><li>Nav stack</li><li>OCR v1</li><li>9 languages</li>
+          </ul>
+        </article>
+
+        <article class="log-entry" data-log>
+          <span class="ghost-num" aria-hidden="true">03</span>
+          <p class="pixel-label log-tag">Phase 03 // The Stage</p>
+          <h3>Destination: WRO Future Innovators</h3>
+          <p>
+            Now Yantrax carries our work to the World Robot Olympiad Future Innovators,
+            Senior Category &mdash; representing our belief that the best way to protect
+            India&rsquo;s past is to build boldly for its future.
+          </p>
+          <ul class="log-chips" aria-label="Phase outcomes">
+            <li>Senior category</li><li>Team of three</li><li>One robot</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="navmap-wrap" aria-hidden="true">
+        <canvas id="navmap"></canvas>
+        <span class="wp-label" style="left:18%; top:82%">01 &middot; Idea</span>
+        <span class="wp-label" style="left:52%; top:45%">02 &middot; Build</span>
+        <span class="wp-label" style="left:82%; top:12%">03 &middot; WRO</span>
+        <p class="pixel-label navmap-status">Route: Idea &rarr; Olympiad // Autonomy: ON</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Gallery ===== -->
+  <section class="section" id="buildlog">
+    <div class="section-head reveal">
+      <p class="pixel-label">The Robot, Every Angle</p>
+      <h2>Designed Like an Artifact,<br />Built Like a Machine</h2>
+      <p class="section-sub">
+        Traditional Indian folk art on the outside, a full autonomy stack on the
+        inside &mdash; because a robot that lives among heritage should look like it
+        belongs there.
+      </p>
+    </div>
+    <div class="gallery reveal" id="gallery">
+      <figure>
+        <img src="images/angle-01.jpg" alt="Yantrax front view with the Namaste greeting on screen" loading="lazy" />
+        <figcaption class="pixel-label g-tag">01 // Front</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-02.jpg" alt="Yantrax three-quarter front view" loading="lazy" />
+        <figcaption class="pixel-label g-tag">02 // Three-quarter</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-03.jpg" alt="Yantrax side profile with peacock artwork and speaker grille" loading="lazy" />
+        <figcaption class="pixel-label g-tag">03 // Profile</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-04.jpg" alt="Yantrax rear three-quarter view with temple artwork" loading="lazy" />
+        <figcaption class="pixel-label g-tag">04 // Rear quarter</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-05.jpg" alt="Yantrax front view with camera head" loading="lazy" />
+        <figcaption class="pixel-label g-tag">05 // Head-on</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-06.jpg" alt="Yantrax with the document scanning chamber visible" loading="lazy" />
+        <figcaption class="pixel-label g-tag">06 // Scan chamber</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-07.jpg" alt="Yantrax side view with folk-art detailing" loading="lazy" />
+        <figcaption class="pixel-label g-tag">07 // Detailing</figcaption>
+      </figure>
+      <figure>
+        <img src="images/angle-08.jpg" alt="Yantrax rear view with the touchscreen greeting" loading="lazy" />
+        <figcaption class="pixel-label g-tag">08 // Rear</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===== Team ===== -->
+  <section class="section" id="team">
+    <div class="team-layout">
+      <div class="team-intro">
+        <p class="pixel-label reveal">Team Yantrax</p>
+        <h2 class="reveal">The People Behind the<br />Robot</h2>
+        <p class="reveal">
+          Team Yantrax is three students who believe heritage and high technology belong
+          in the same sentence. Between us we cover the robot end to end &mdash; the
+          autonomy that moves it, the AI that lets it see and speak, and the design that
+          makes a machine feel welcome in a museum.
+        </p>
+        <p class="reveal">
+          We compete in the World Robot Olympiad Future Innovators, Senior Category,
+          under one motto: <em>&ldquo;Preserving Heritage Through Intelligent
+          Robotics.&rdquo;</em>
+        </p>
+      </div>
+      <div class="team-cards" id="team-cards">
+        <article class="member-card reveal">
+          <div class="member-info">
+            <h3>Daivik Reddy</h3>
+            <p class="pixel-label role">Team Member</p>
+            <p class="quote">&ldquo;A robot in a museum shouldn&rsquo;t feel like an exhibit.
+              It should feel like the friendliest guide you&rsquo;ve ever had.&rdquo;</p>
+          </div>
+          <div class="member-photo" style="--g:#d9d2c6"><span>DR</span></div>
+        </article>
+        <article class="member-card reveal">
+          <div class="member-info">
+            <h3>Jeshwanth</h3>
+            <p class="pixel-label role">Team Member</p>
+            <p class="quote">&ldquo;Offline is the hard mode of AI &mdash; and exactly why it
+              works in every museum, not just the connected ones.&rdquo;</p>
+          </div>
+          <div class="member-photo" style="--g:#cdd6dc"><span>J</span></div>
+        </article>
+        <article class="member-card reveal">
+          <div class="member-info">
+            <h3>Juhitha</h3>
+            <p class="pixel-label role">Team Member</p>
+            <p class="quote">&ldquo;Every manuscript we digitize is a story that can never be
+              lost again. That&rsquo;s worth every late night.&rdquo;</p>
+          </div>
+          <div class="member-photo" style="--g:#d6cdd9"><span>J</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ===== -->
+  <section class="section" id="contact">
+    <div class="contact-card">
+      <div class="contact-copy">
+        <p class="pixel-label reveal">Get in touch</p>
+        <h2 class="reveal">Let&rsquo;s Preserve the Past,<br />Together</h2>
+        <p class="reveal">
+          Maybe you run a museum or heritage site that could use an untiring, multilingual
+          guide. Maybe you&rsquo;re a mentor, judge or fellow builder curious about how
+          Yantrax works under the hood. Or maybe you simply love the idea of robots
+          keeping culture alive. Whatever brings you here, write to us &mdash; we&rsquo;d
+          love to talk.
+        </p>
+      </div>
+      <form class="contact-form reveal" id="contact-form" novalidate>
+        <input type="text" name="name" placeholder="Enter your name *" required aria-label="Name" />
+        <input type="email" name="email" placeholder="Enter your email *" required aria-label="Email" />
+        <textarea name="message" rows="5" placeholder="Enter your message ..." required aria-label="Message"></textarea>
+        <span class="btn-frame"><button class="btn" type="submit">Send message</button></span>
+        <p class="form-note" id="form-note" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+   <div class="footer-top">
+    <div class="footer-left">
+      <div class="footer-brand">
+        <a class="logo" href="#top">
+          <svg class="logo-mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+            <circle cx="16" cy="16" r="14" fill="#000"/>
+            <circle cx="11.5" cy="13" r="2.6" fill="#fff"/>
+            <circle cx="20.5" cy="13" r="2.6" fill="#fff"/>
+            <circle cx="16" cy="20.5" r="2.2" fill="#fff"/>
+          </svg>
+          <span>Yantrax</span>
+        </a>
+        <span class="footer-sep"></span>
+        <p class="footer-tag">Preserving Heritage Through Intelligent Robotics.</p>
+      </div>
+      <p class="footer-copy">&copy; 2026 Team Yantrax&nbsp;|&nbsp;World Robot Olympiad Future Innovators&nbsp;|&nbsp;All rights reserved</p>
+    </div>
+    <div class="footer-right">
+      <p class="footer-info-title">Information</p>
+      <a href="#project">The Robot</a>
+      <a href="#pipeline">Architecture</a>
+      <a href="#team">Team</a>
+      <a href="https://github.com/Daivik1520/Yantrax" target="_blank" rel="noopener">GitHub</a>
+    </div>
+   </div><!-- /footer-top -->
+   <canvas id="wordmark" aria-hidden="true"></canvas>
+  </footer>
+
+</div><!-- /page-frame -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
