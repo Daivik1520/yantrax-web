@@ -634,7 +634,7 @@ function onVisible(canvas, cb) {
     ".stat",
     ".hw-table", ".hw-actions",
     ".milestones-head", ".navmap-wrap",
-    ".gallery figure",
+    "#coverflow",
     ".team-intro", ".member-card",
     ".contact-copy", ".contact-form",
     ".footer-top"
@@ -764,6 +764,146 @@ function onVisible(canvas, cb) {
     });
   }, { threshold: 0.6 });
   counts.forEach(function (el) { io.observe(el); });
+})();
+
+/* ===== 3D Coverflow gallery ===== */
+(function () {
+  var root = document.getElementById("coverflow");
+  if (!root) return;
+
+  var cards = root.querySelectorAll(".coverflow-card");
+  var n = cards.length;
+  if (n === 0) return;
+
+  var active = 0;
+  var locked = false;
+  var DEPTH = 240;
+  var SCALE_STEP = 0.16;
+  var MAX_VISIBLE = 2;
+  var GAP_PX = 240;   // spacing between cards
+  var TILT = 12;      // rotateY degrees
+  var SIDE_TILT = 8;  // rotateZ degrees
+  var DIM = 0.4;      // inactive overlay opacity
+  var DUR = 600;      // transition ms
+
+  // Build dot indicators
+  var dotsWrap = root.querySelector(".coverflow-dots");
+  for (var d = 0; d < n; d++) {
+    var dot = document.createElement("button");
+    dot.className = "coverflow-dot" + (d === 0 ? " active" : "");
+    dot.setAttribute("aria-label", "Go to slide " + (d + 1));
+    dot.dataset.index = d;
+    dotsWrap.appendChild(dot);
+  }
+  var dots = dotsWrap.querySelectorAll(".coverflow-dot");
+
+  function layout() {
+    for (var i = 0; i < n; i++) {
+      var rel = i - active;
+      if (rel > n / 2) rel -= n;
+      if (rel < -n / 2) rel += n;
+
+      var ax = Math.abs(rel);
+      var visible = ax <= MAX_VISIBLE;
+      var isActive = rel === 0;
+      var sc = Math.max(0.4, 1 - ax * SCALE_STEP);
+      var tx = rel * GAP_PX;
+      var tz = -ax * DEPTH;
+      var ry = -rel * TILT;
+      var rz = rel * SIDE_TILT;
+
+      var card = cards[i];
+      card.style.transform =
+        "translate(-50%, -50%) translateX(" + tx + "px) translateZ(" + tz + "px) rotateY(" + ry + "deg) rotateZ(" + rz + "deg) scale(" + sc + ")";
+      card.style.opacity = visible ? 1 : 0;
+      card.style.pointerEvents = visible && !isActive ? "auto" : (isActive ? "auto" : "none");
+
+      if (isActive) {
+        card.classList.add("active");
+        card.style.cursor = "default";
+      } else {
+        card.classList.remove("active");
+        card.style.cursor = visible ? "pointer" : "default";
+      }
+
+      // Dim overlay
+      var dim = card.querySelector(".coverflow-dim");
+      if (dim) dim.style.opacity = isActive ? 0 : DIM;
+    }
+
+    // Update dots
+    for (var j = 0; j < dots.length; j++) {
+      dots[j].classList.toggle("active", j === active);
+    }
+  }
+
+  function lock() {
+    locked = true;
+    setTimeout(function () { locked = false; }, Math.max(50, DUR));
+  }
+
+  function step(dir) {
+    if (locked) return;
+    lock();
+    active = (((active + dir) % n) + n) % n;
+    layout();
+  }
+
+  function goTo(idx) {
+    if (locked || idx === active) return;
+    lock();
+    active = idx;
+    layout();
+  }
+
+  // Card clicks
+  cards.forEach(function (card, i) {
+    card.addEventListener("click", function () {
+      if (locked) return;
+      if (i === active) {
+        step(1); // clicking active advances
+      } else {
+        goTo(i);
+      }
+    });
+  });
+
+  // Arrow buttons
+  var prevBtn = root.querySelector(".coverflow-prev");
+  var nextBtn = root.querySelector(".coverflow-next");
+  if (prevBtn) prevBtn.addEventListener("click", function () { step(-1); });
+  if (nextBtn) nextBtn.addEventListener("click", function () { step(1); });
+
+  // Dot clicks
+  dots.forEach(function (dot) {
+    dot.addEventListener("click", function () {
+      goTo(parseInt(dot.dataset.index, 10));
+    });
+  });
+
+  // Keyboard
+  root.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight") { e.preventDefault(); step(1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); step(-1); }
+  });
+
+  // Touch / swipe
+  var touchStartX = 0;
+  var touchStartY = 0;
+  root.addEventListener("touchstart", function (e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  root.addEventListener("touchend", function (e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      step(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+
+  // Initial layout
+  layout();
 })();
 
 /* ===== Contact form (demo submit) ===== */

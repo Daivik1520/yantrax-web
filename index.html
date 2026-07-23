@@ -401,39 +401,54 @@
         belongs there.
       </p>
     </div>
-    <div class="gallery reveal" id="gallery">
-      <figure>
-        <img src="images/angle-01.jpg" alt="Yantrax front view with the Namaste greeting on screen" loading="lazy" />
-        <figcaption class="pixel-label g-tag">01 // Front</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-02.jpg" alt="Yantrax three-quarter front view" loading="lazy" />
-        <figcaption class="pixel-label g-tag">02 // Three-quarter</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-03.jpg" alt="Yantrax side profile with peacock artwork and speaker grille" loading="lazy" />
-        <figcaption class="pixel-label g-tag">03 // Profile</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-04.jpg" alt="Yantrax rear three-quarter view with temple artwork" loading="lazy" />
-        <figcaption class="pixel-label g-tag">04 // Rear quarter</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-05.jpg" alt="Yantrax front view with camera head" loading="lazy" />
-        <figcaption class="pixel-label g-tag">05 // Head-on</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-06.jpg" alt="Yantrax with the document scanning chamber visible" loading="lazy" />
-        <figcaption class="pixel-label g-tag">06 // Scan chamber</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-07.jpg" alt="Yantrax side view with folk-art detailing" loading="lazy" />
-        <figcaption class="pixel-label g-tag">07 // Detailing</figcaption>
-      </figure>
-      <figure>
-        <img src="images/angle-08.jpg" alt="Yantrax rear view with the touchscreen greeting" loading="lazy" />
-        <figcaption class="pixel-label g-tag">08 // Rear</figcaption>
-      </figure>
+    <div class="coverflow reveal" id="coverflow" tabindex="0" role="group" aria-roledescription="carousel">
+      <div class="coverflow-stage">
+        <div class="coverflow-card" data-label="01 // Front">
+          <img src="images/angle-01.jpg" alt="Yantrax front view with the Namaste greeting on screen" loading="lazy" />
+          <span class="coverflow-label pixel-label">01 // Front</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="02 // Three-quarter">
+          <img src="images/angle-02.jpg" alt="Yantrax three-quarter front view" loading="lazy" />
+          <span class="coverflow-label pixel-label">02 // Three-quarter</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="03 // Profile">
+          <img src="images/angle-03.jpg" alt="Yantrax side profile with peacock artwork and speaker grille" loading="lazy" />
+          <span class="coverflow-label pixel-label">03 // Profile</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="04 // Rear quarter">
+          <img src="images/angle-04.jpg" alt="Yantrax rear three-quarter view with temple artwork" loading="lazy" />
+          <span class="coverflow-label pixel-label">04 // Rear quarter</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="05 // Head-on">
+          <img src="images/angle-05.jpg" alt="Yantrax front view with camera head" loading="lazy" />
+          <span class="coverflow-label pixel-label">05 // Head-on</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="06 // Scan chamber">
+          <img src="images/angle-06.jpg" alt="Yantrax with the document scanning chamber visible" loading="lazy" />
+          <span class="coverflow-label pixel-label">06 // Scan chamber</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="07 // Detailing">
+          <img src="images/angle-07.jpg" alt="Yantrax side view with folk-art detailing" loading="lazy" />
+          <span class="coverflow-label pixel-label">07 // Detailing</span>
+          <div class="coverflow-dim"></div>
+        </div>
+        <div class="coverflow-card" data-label="08 // Rear">
+          <img src="images/angle-08.jpg" alt="Yantrax rear view with the touchscreen greeting" loading="lazy" />
+          <span class="coverflow-label pixel-label">08 // Rear</span>
+          <div class="coverflow-dim"></div>
+        </div>
+      </div>
+      <!-- Navigation arrows -->
+      <button class="coverflow-arrow coverflow-prev" aria-label="Previous slide">&#8592;</button>
+      <button class="coverflow-arrow coverflow-next" aria-label="Next slide">&#8594;</button>
+      <!-- Dot indicators -->
+      <div class="coverflow-dots"></div>
     </div>
   </section>
 
