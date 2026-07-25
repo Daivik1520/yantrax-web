@@ -867,9 +867,18 @@ p { color: var(--gray-60); }
 .linkedin:hover { background: var(--black); color: var(--white); }
 .footer-copy { font-size: 13px; color: var(--gray-35); }
 .footer-right { display: grid; gap: 10px; align-content: start; }
-.footer-info-title { color: var(--black); font-weight: 500; }
-.footer-right a { color: var(--gray-60); transition: color 0.2s ease; }
-.footer-right a:hover { color: var(--black); }
+.footer-info-title { color: var(--black); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+.footer-right a {
+  color: var(--black);
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  text-decoration: none;
+  font-size: 14px;
+  display: inline-block;
+}
+.footer-right a:hover {
+  color: #0066cc;
+  text-decoration: underline;
+}
 
 /* ============ Custom crosshair cursor ============ */
 @media (pointer: fine) {
@@ -1279,13 +1288,7 @@ p { color: var(--gray-60); }
   color: var(--gray-60);
 }
 
-/* ============ Site Footer ============ */
-.site-footer {
-  background: #f0f0f0;
-  border-top: 1px solid var(--line);
-  padding: 64px 48px 32px;
-  margin-top: 96px;
-}
+/* ============ Multi-Page Footer ============ */
 .footer-content {
   max-width: 1200px;
   margin: 0 auto 48px;
@@ -1329,6 +1332,16 @@ p { color: var(--gray-60); }
   text-align: center;
   font-size: 13px;
   color: var(--gray-60);
+}
+/* Multi-page footer background */
+about.html .site-footer,
+technical.html .site-footer,
+blog.html .site-footer,
+terms.html .site-footer {
+  background: #f0f0f0;
+  border-top: 1px solid var(--line);
+  padding: 64px 48px 32px;
+  margin-top: 96px;
 }
 
 /* ============ Background Alternation ============ */
