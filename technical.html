@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical Specifications | Yantrax Robot</title>
+  <meta name="description" content="Deep dive into Yantrax's architecture, hardware, software stack, and the offline AI systems that power the robot." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+</head>
+<body>
+
+<div class="page-frame">
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <a class="logo" href="index.html" aria-label="Yantrax home">
+      <img class="logo-mark" src="images/yantrax-icon.png" alt="Yantrax" width="28" height="28" />
+      <span>Yantrax</span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="technical.html" class="active">Technical</a>
+      <a href="blog.html">Blog</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+    <a class="header-cta" href="index.html#contact">Contact&nbsp;us</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== Page Content ===== -->
+  <section class="page-hero">
+    <h1>Technical Architecture</h1>
+    <p class="page-lead">The systems and algorithms that power Yantrax's autonomous operation.</p>
+  </section>
+
+  <section class="section">
+    <div class="content-block">
+      <h2>Hardware Stack</h2>
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Specification</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Main Compute</strong></td>
+            <td>NVIDIA Jetson Orin Nano 8GB</td>
+            <td>All inference, processing, autonomy logic</td>
+          </tr>
+          <tr>
+            <td><strong>Perception</strong></td>
+            <td>Stereo ZED 2i Camera</td>
+            <td>Depth, stereo vision, spatial awareness</td>
+          </tr>
+          <tr>
+            <td><strong>Navigation</strong></td>
+            <td>LiDAR (16-channel)</td>
+            <td>SLAM, obstacle detection, mapping</td>
+          </tr>
+          <tr>
+            <td><strong>IMU</strong></td>
+            <td>9-axis IMU + Magnetometer</td>
+            <td>Orientation, gyroscopic stabilization</td>
+          </tr>
+          <tr>
+            <td><strong>Drive System</strong></td>
+            <td>2× DC Motors + Encoders</td>
+            <td>Differential drive locomotion</td>
+          </tr>
+          <tr>
+            <td><strong>Display</strong></td>
+            <td>23" Portrait Touch Display</td>
+            <td>Visitor interaction, visual feedback</td>
+          </tr>
+          <tr>
+            <td><strong>Audio</strong></td>
+            <td>Stereo speakers + Microphone array</td>
+            <td>Speech synthesis, multilingual guides</td>
+          </tr>
+          <tr>
+            <td><strong>Power</strong></td>
+            <td>240Wh LiPo Battery + BMS</td>
+            <td>~6 hours continuous operation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="content-block">
+      <h2>Software Stack</h2>
+      <div class="tech-grid">
+        <div class="tech-box">
+          <h3>ROS 2 Humble</h3>
+          <p>Middleware for sensor integration, module communication, and real-time constraints.</p>
+        </div>
+        <div class="tech-box">
+          <h3>Nav2</h3>
+          <p>Autonomous navigation, path planning, behavior trees for complex autonomy sequences.</p>
+        </div>
+        <div class="tech-box">
+          <h3>TensorRT</h3>
+          <p>Optimized inference engine for quantized neural networks on Jetson hardware.</p>
+        </div>
+        <div class="tech-box">
+          <h3>OpenCV</h3>
+          <p>Computer vision pipelines: feature detection, image processing, artifact analysis.</p>
+        </div>
+        <div class="tech-box">
+          <h3>Tesseract OCR</h3>
+          <p>Optical character recognition for manuscript digitization and text extraction.</p>
+        </div>
+        <div class="tech-box">
+          <h3>Espeak-ng</h3>
+          <p>Offline text-to-speech in Hindi, Tamil, Telugu, Kannada, and English.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="content-block">
+      <h2>Key Algorithms</h2>
+
+      <h3>Simultaneous Localization and Mapping (SLAM)</h3>
+      <p>
+        Yantrax uses laser-based SLAM to build real-time maps of its environment without pre-loaded floor plans.
+        The LiDAR scans 16 layers at 10Hz, feeding into an incremental graph-based SLAM backend that maintains
+        accuracy over hours of continuous operation.
+      </p>
+
+      <h3>Visitor Detection &amp; Tracking</h3>
+      <p>
+        The stereo camera runs a lightweight person detector (MobileNet-SSD, quantized) to identify visitors and their
+        rough distance. When a person is detected, Yantrax approaches and initiates its greeting sequence, with the
+        display showing "Namaste" and offering language selection.
+      </p>
+
+      <h3>Artifact Recognition</h3>
+      <p>
+        A fine-tuned ResNet-50 model identifies museum artifacts by image classification. The model is quantized to
+        INT8 precision using TensorRT, achieving 94% accuracy on a dataset of 2,400 Indian heritage items while
+        running at 45 FPS on Jetson Orin Nano.
+      </p>
+
+      <h3>Manuscript OCR Pipeline</h3>
+      <p>
+        For digitization, Yantrax captures high-resolution photos of documents, applies adaptive thresholding and
+        deskewing, then runs Tesseract OCR with language-specific dictionaries. The output is searchable text paired
+        with the original image for archival.
+      </p>
+
+      <h3>Multilingual Natural Language</h3>
+      <p>
+        Visitor queries are processed by a small transformer model (DistilBERT + custom heads, 110M parameters)
+        fine-tuned on heritage-related QA pairs in six Indian languages. Responses are generated as templates and
+        synthesized to speech using Espeak-ng with prosody adjustments.
+      </p>
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="content-block">
+      <h2>Performance Metrics</h2>
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Max Speed</strong></td>
+            <td>0.8 m/s</td>
+          </tr>
+          <tr>
+            <td><strong>Turn Radius</strong></td>
+            <td>0.3 m (in-place capable)</td>
+          </tr>
+          <tr>
+            <td><strong>SLAM Update Rate</strong></td>
+            <td>10 Hz</td>
+          </tr>
+          <tr>
+            <td><strong>Visitor Detection Latency</strong></td>
+            <td>~120 ms</td>
+          </tr>
+          <tr>
+            <td><strong>Artifact Recognition Latency</strong></td>
+            <td>~45 ms @ 45 FPS</td>
+          </tr>
+          <tr>
+            <td><strong>Speech Synthesis Latency</strong></td>
+            <td>~500 ms for a 30-word response</td>
+          </tr>
+          <tr>
+            <td><strong>OCR Throughput</strong></td>
+            <td>~2 pages/minute at 300 DPI</td>
+          </tr>
+          <tr>
+            <td><strong>Continuous Runtime</strong></td>
+            <td>~6 hours on full battery</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="content-block">
+      <h2>Design Principles</h2>
+      <p>
+        Every design decision in Yantrax is driven by three constraints:
+      </p>
+      <ul class="principle-list">
+        <li><strong>No Internet:</strong> Every bit of computation happens on-device. No cloud calls, no fallbacks to remote servers.</li>
+        <li><strong>Real Time:</strong> Museum environments are unpredictable. The robot must perceive, decide, and act in under 200ms to feel responsive.</li>
+        <li><strong>Graceful Degradation:</strong> If one sensor fails (e.g., LiDAR), the robot continues operating with reduced capability rather than shutting down.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Yantrax</h4>
+        <p>Autonomous museum guide &amp; cultural preservation robot.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="technical.html">Technical</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Team Yantrax. World Robot Olympiad Future Innovators.</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | Yantrax</title>
+  <meta name="description" content="Stories from Team Yantrax: behind-the-scenes development, lessons learned, and insights into building offline AI for cultural preservation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+20&family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+</head>
+<body>
+
+<div class="page-frame">
+
+  <!-- ===== Header ===== -->
+  <header class="site-header" id="top">
+    <a class="logo" href="index.html" aria-label="Yantrax home">
+      <img class="logo-mark" src="images/yantrax-icon.png" alt="Yantrax" width="28" height="28" />
+      <span>Yantrax</span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="technical.html">Technical</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+    <a class="header-cta" href="index.html#contact">Contact&nbsp;us</a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- ===== Page Content ===== -->
+  <section class="page-hero">
+    <h1>From the Yantrax Team</h1>
+    <p class="page-lead">Stories, lessons, and insights from building an offline AI robot for cultural heritage.</p>
+  </section>
+
+  <section class="section">
+    <div class="blog-feed">
+
+      <!-- Blog Post 1 -->
+      <article class="blog-post">
+        <div class="blog-meta">
+          <time datetime="2024-07-22">July 22, 2024</time>
+          <span class="blog-author">by Jeshwanth</span>
+        </div>
+        <h2><a href="#">Why We Chose the Jetson Orin Nano</a></h2>
+        <p class="blog-excerpt">
+          When we started Yantrax, we faced a critical choice: cloud-based AI or edge computing? The answer became clear
+          when we realized museums need robots that work without internet. Here's how we settled on the Jetson Orin Nano
+          and what it taught us about offline inference at scale.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">Edge Computing</span>
+          <span class="tag">Hardware</span>
+          <span class="tag">AI</span>
+        </div>
+      </article>
+
+      <!-- Blog Post 2 -->
+      <article class="blog-post">
+        <div class="blog-meta">
+          <time datetime="2024-07-15">July 15, 2024</time>
+          <span class="blog-author">by Daivik</span>
+        </div>
+        <h2><a href="#">Shipping a Robot That Doesn't Break (SLAM Edition)</a></h2>
+        <p class="blog-excerpt">
+          Building a robot's navigation stack is like building a plane—you can't debug it mid-flight. We spent three weeks
+          tuning SLAM parameters, testing in different lighting conditions, and learning why your loop closure detector
+          needs to be robust before you ship.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">Robotics</span>
+          <span class="tag">SLAM</span>
+          <span class="tag">Navigation</span>
+        </div>
+      </article>
+
+      <!-- Blog Post 3 -->
+      <article class="blog-post">
+        <div class="blog-meta">
+          <time datetime="2024-07-08">July 8, 2024</time>
+          <span class="blog-author">by Juhitha</span>
+        </div>
+        <h2><a href="#">Designing a Robot That Museums Actually Want</a></h2>
+        <p class="blog-excerpt">
+          We talked to curators, conservators, and security staff. They taught us something machines often miss: a robot in
+          a museum isn't an exhibit, it's a tool. And tools should be invisible. How we designed Yantrax to fit into
+          heritage spaces without overshadowing them.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">Design</span>
+          <span class="tag">Heritage</span>
+          <span class="tag">UX</span>
+        </div>
+      </article>
+
+      <!-- Blog Post 4 -->
+      <article class="blog-post">
+        <div class="blog-meta">
+          <time datetime="2024-06-30">June 30, 2024</time>
+          <span class="blog-author">by Jeshwanth</span>
+        </div>
+        <h2><a href="#">Quantizing Neural Networks Without Losing Your Mind</a></h2>
+        <p class="blog-excerpt">
+          Running a state-of-the-art vision model on 8GB of RAM means quantization isn't optional—it's survival. We went from
+          FP32 to INT8 while keeping 94% accuracy. This is what we learned about the dark arts of model compression.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Optimization</span>
+          <span class="tag">TensorRT</span>
+        </div>
+      </article>
+
+      <!-- Blog Post 5 -->
+      <article class="blog-post">
+        <div class="blog-meta">
+          <time datetime="2024-06-20">June 20, 2024</time>
+          <span class="blog-author">by Daivik</span>
+        </div>
+        <h2><a href="#">ROS 2 in Production: What They Don't Tell You</a></h2>
+        <p class="blog-excerpt">
+          ROS 2 is powerful, but deploying it on a robot that needs to run 6+ hours without supervision is a different beast.
+          Real-time concerns, memory leaks, and the joys of debugging a distributed system on moving hardware.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">ROS 2</span>
+          <span class="tag">Systems</span>
+          <span class="tag">Real-time</span>
+        </div>
+      </article>
+
+      <!-- Blog Post 6 -->
+      <article class="blog-post">
+        <div class="blog-meta">
+          <time datetime="2024-06-10">June 10, 2024</time>
+          <span class="blog-author">by Juhitha</span>
+        </div>
+        <h2><a href="#">When a Robot Talks, Who's Actually Speaking?</a></h2>
+        <p class="blog-excerpt">
+          Yantrax can greet visitors in six Indian languages. But making speech feel natural—not robotic—meant diving deep into
+          prosody, pacing, and the subtle art of making machines sound welcoming. Our journey with text-to-speech.
+        </p>
+        <div class="blog-tags">
+          <span class="tag">NLP</span>
+          <span class="tag">Linguistics</span>
+          <span class="tag">UX</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="section bg-alt">
+    <div class="content-block">
+      <h2>Coming Soon</h2>
+      <p>
+        We're working on more posts about our competition journey, the technical challenges we've overcome, and reflections
+        on what it means to build robots for cultural preservation. Stay tuned.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Yantrax</h4>
+        <p>Autonomous museum guide &amp; cultural preservation robot.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="technical.html">Technical</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Team Yantrax. World Robot Olympiad Future Innovators.</p>
+    </div>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
