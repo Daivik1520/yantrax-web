@@ -906,6 +906,175 @@ function onVisible(canvas, cb) {
   layout();
 })();
 
+/* ===== Team ASCII portraits (hover reveals the photo) ===== */
+(function () {
+  const canvases = document.querySelectorAll(".ascii-photo");
+  if (!canvases.length) return;
+
+  // black ink + inverted luminance: dark-on-light to match the site
+  const RAMP = " .:-=+*#%@";
+  const COLUMNS = 200;
+  const FOCUS_Y = 19;      // % from top — keeps faces in frame on "cover" crop
+  const PUNCH = 2.5;       // contrast multiplier
+  const INK = "#000";
+  const REVEAL_SIZE = 80;
+  const REVEAL_SOFT = 16;
+  const BLOBS = 5;
+
+  function coverRect(imgW, imgH, boxW, boxH) {
+    const scale = Math.max(boxW / imgW, boxH / imgH);
+    const dw = imgW * scale, dh = imgH * scale;
+    return { dx: (boxW - dw) / 2, dy: (boxH - dh) * (FOCUS_Y / 100), dw, dh };
+  }
+
+  function mount(canvas) {
+    const ctx = canvas.getContext("2d");
+    const off = document.createElement("canvas");   // pre-rendered ascii
+    const sampler = document.createElement("canvas");
+    const photo = document.createElement("canvas"); // photo layer
+    const mask = document.createElement("canvas");  // blob mask
+    const pointer = { x: -9999, y: -9999, inside: false };
+    const blobs = [];
+    for (let i = 0; i < BLOBS; i++) blobs.push({ x: 0, y: 0 });
+    let seeded = false;
+    let img = null;
+    let place = null;
+    let raf = 0;
+    let running = false;
+
+    function buildAscii() {
+      if (!img) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.clientWidth || 300;
+      const h = canvas.clientHeight || 300;
+      canvas.width = Math.max(1, Math.round(w * dpr));
+      canvas.height = Math.max(1, Math.round(h * dpr));
+
+      const cellW = canvas.width / COLUMNS;
+      const fontPx = cellW * 1.7;
+      const cellH = fontPx;
+      const rows = Math.max(1, Math.floor(canvas.height / cellH));
+
+      sampler.width = COLUMNS;
+      sampler.height = rows;
+      const sctx = sampler.getContext("2d", { willReadFrequently: true });
+      place = coverRect(img.width, img.height, canvas.width, canvas.height);
+      sctx.clearRect(0, 0, COLUMNS, rows);
+      sctx.drawImage(img, place.dx / cellW, place.dy / cellH, place.dw / cellW, place.dh / cellH);
+      const data = sctx.getImageData(0, 0, COLUMNS, rows).data;
+
+      off.width = canvas.width;
+      off.height = canvas.height;
+      const octx = off.getContext("2d");
+      octx.clearRect(0, 0, off.width, off.height);
+      octx.font = fontPx.toFixed(2) + "px ui-monospace, monospace";
+      octx.textBaseline = "top";
+      octx.fillStyle = INK;
+
+      const last = RAMP.length - 1;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < COLUMNS; c++) {
+          const i = (r * COLUMNS + c) * 4;
+          let lum = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
+          lum = (lum - 0.5) * PUNCH + 0.5;
+          lum = 1 - lum; // invert: dark image areas → dense glyphs
+          lum = lum < 0 ? 0 : lum > 1 ? 1 : lum;
+          const ch = RAMP[Math.round(lum * last)];
+          if (ch === " ") continue;
+          octx.fillText(ch, c * cellW, r * cellH);
+        }
+      }
+    }
+
+    function updateBlobs() {
+      const dpr = canvas.width / (canvas.clientWidth || 300);
+      const tx = pointer.x * dpr, ty = pointer.y * dpr;
+      if (!seeded) {
+        for (const b of blobs) { b.x = tx; b.y = ty; }
+        seeded = true;
+        return;
+      }
+      blobs[0].x += (tx - blobs[0].x) * 0.35;
+      blobs[0].y += (ty - blobs[0].y) * 0.35;
+      for (let i = 1; i < blobs.length; i++) {
+        blobs[i].x += (blobs[i - 1].x - blobs[i].x) * 0.35;
+        blobs[i].y += (blobs[i - 1].y - blobs[i].y) * 0.35;
+      }
+    }
+
+    function paint() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(off, 0, 0);
+      if (!pointer.inside || !img || !place) return;
+
+      const dpr = canvas.width / (canvas.clientWidth || 300);
+      photo.width = mask.width = canvas.width;
+      photo.height = mask.height = canvas.height;
+      const pctx = photo.getContext("2d");
+      const mctx = mask.getContext("2d");
+
+      pctx.globalCompositeOperation = "source-over";
+      pctx.clearRect(0, 0, photo.width, photo.height);
+      pctx.drawImage(img, place.dx, place.dy, place.dw, place.dh);
+
+      mctx.clearRect(0, 0, mask.width, mask.height);
+      mctx.save();
+      mctx.filter = "blur(" + (REVEAL_SOFT * dpr).toFixed(1) + "px)";
+      mctx.fillStyle = "#fff";
+      for (let i = 0; i < blobs.length; i++) {
+        const t = blobs.length <= 1 ? 0 : i / (blobs.length - 1);
+        mctx.beginPath();
+        mctx.arc(blobs[i].x, blobs[i].y, REVEAL_SIZE * dpr * (1 - t * 0.5), 0, Math.PI * 2);
+        mctx.fill();
+      }
+      mctx.restore();
+
+      pctx.globalCompositeOperation = "destination-in";
+      pctx.drawImage(mask, 0, 0);
+      ctx.drawImage(photo, 0, 0);
+    }
+
+    function loop() {
+      if (!running) return;
+      updateBlobs();
+      paint();
+      raf = requestAnimationFrame(loop);
+    }
+
+    canvas.addEventListener("pointermove", function (e) {
+      const r = canvas.getBoundingClientRect();
+      pointer.x = e.clientX - r.left;
+      pointer.y = e.clientY - r.top;
+      pointer.inside = pointer.x >= 0 && pointer.y >= 0 && pointer.x <= r.width && pointer.y <= r.height;
+    });
+    canvas.addEventListener("pointerleave", function () {
+      pointer.inside = false;
+      seeded = false;
+    });
+
+    const image = new Image();
+    image.onload = function () {
+      img = image;
+      buildAscii();
+      paint();
+      if (reduceMotion) return;
+      onVisible(canvas, function (vis) {
+        if (vis && !running) { running = true; loop(); }
+        else if (!vis) { running = false; cancelAnimationFrame(raf); }
+      });
+    };
+    image.src = canvas.dataset.src;
+
+    let rt;
+    window.addEventListener("resize", function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () { buildAscii(); paint(); }, 200);
+    });
+  }
+
+  canvases.forEach(mount);
+})();
+
 /* ===== Contact form (demo submit) ===== */
 (function () {
   const form = document.getElementById("contact-form");
