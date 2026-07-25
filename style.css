@@ -784,7 +784,6 @@ p { color: var(--gray-60); }
   background:
     radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.85), transparent 55%),
     linear-gradient(160deg, var(--g, #d5d5d5), #9d9d9d);
-  filter: grayscale(1);
 }
 .member-photo .ascii-photo {
   display: block;
